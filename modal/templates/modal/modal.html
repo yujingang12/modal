@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+    <link rel= "stylesheet" type="text/css" href="{% static 'css/modal.css' %}">
+</head>
+<body>
+
+<!--모달-->
+<div id="modal_layer">
+    <div class="modal_container">
+        <div class="close_button" onclick="change1()" onmouseover="setCursor()">
+            x
+        </div>
+        <div class="modal_content">
+            <div id="modal_title">
+            </div>
+            <div id="modal_body"></div>
+        </div>
+    </div>
+</div>
+<!--글 목록-->
+{% for blogs in blogs.all %}
+<div onclick="change('{{blogs.title}}', '{{blogs.body}}')">
+    <a href="#modal_{{blogs.id}}"><h1>{{blogs.title}}</h1></a>
+    <div>{{blogs.body}}</div>
+</div>
+{% endfor %}
+
+<!--javascripts-->
+<script>
+    function change(title, content){
+
+        document.getElementById('modal_title').textContent = title;
+        document.getElementById('modal_body').textContent = content;
+        document.getElementById('modal_layer').style.display="flex";
+        document.getElementsByClassName('modal_container')[0].style.display="flex";
+        let body = document.getElementsByTagName("body")[0];
+        body.style.overflowY = "overlay";
+        body.style.position = "fixed";
+
+    }
+
+    function change1(){
+        document.getElementById('modal_layer').style.display="none";
+        document.getElementsByClassName('modal_container')[0].style.display="none";
+        let body = document.getElementsByTagName("body")[0];
+        body.style.removeProperty('overflowY');
+        body.style.removeProperty('position');
+        window.history.pushState("","",'/modal/');
+
+    }
+
+    function setCursor(){
+        document.getElementsByClassName('close_button')[0].style.cursor = "pointer";
+    }
+
+</script>
+
+
+</body>
